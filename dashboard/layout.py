@@ -1,4 +1,5 @@
 from dash import dcc, html, dash_table
+from dashboard.chatbot import seccion_chatbot          # ← NUEVO
 
 
 def crear_layout() -> html.Div:
@@ -37,7 +38,6 @@ def crear_layout() -> html.Div:
                     style={"fontFamily": "Arial", "color": "#2c3e50",
                            "paddingLeft": "20px"}),
 
-            # Búsqueda y filtros
             html.Div([
                 _seccion_busqueda(),
                 _seccion_filtros(),
@@ -45,7 +45,6 @@ def crear_layout() -> html.Div:
                       "alignItems": "center", "padding": "0 20px",
                       "marginBottom": "10px"}),
 
-            # Tabla
             dash_table.DataTable(
                 id="tabla_vision_general",
                 row_selectable="multi",
@@ -63,22 +62,24 @@ def crear_layout() -> html.Div:
 
             dcc.Store(id="signal_botones_tabla", data={}),
 
-            # Botones de acción
             html.Div(id="botones_tabla", children=[
-                _boton("Re-escanear dominio(s)", "btn_reescanear",  "#3498db"),
-                _boton("Eliminar dominio(s)",    "btn_eliminar_fila", "#e74c3c"),
+                _boton("Re-escanear dominio(s)", "btn_reescanear",   "#3498db"),
+                _boton("Eliminar dominio(s)",    "btn_eliminar_fila","#e74c3c"),
             ], style={"display": "flex", "justifyContent": "flex-start",
                       "alignItems": "center", "marginTop": "15px",
                       "marginLeft": "20px", "gap": "10px"}),
 
-            # Sin resultados / registro
             _seccion_sin_resultados(),
         ]),
+
+        # ── Chatbot RADAR AI ──────────────────────────────────────────────────
+        seccion_chatbot(),                             # ← NUEVO
+
     ], style={"backgroundColor": "#f8f9fa", "minHeight": "100vh",
               "paddingBottom": "40px"})
 
 
-# ── Helpers de layout ──────────────────────────────────────────────────────────
+# ── Helpers ────────────────────────────────────────────────────────────────────
 
 def _tarjeta(valor, id_elem, etiqueta, color):
     return html.Div([
@@ -125,10 +126,10 @@ def _seccion_filtros():
             dcc.Dropdown(
                 id="filtro_columna",
                 options=[
-                    {"label": "Riesgo",                      "value": "Riesgo"},
-                    {"label": "Versión TLS",                 "value": "Version TLS"},
-                    {"label": "Protocolo de cifrado",        "value": "Protocolo de cifrado"},
-                    {"label": "Emisor de certificado TLS",   "value": "Emisor de certificado TLS"},
+                    {"label": "Riesgo",                    "value": "Riesgo"},
+                    {"label": "Versión TLS",               "value": "Version TLS"},
+                    {"label": "Protocolo de cifrado",      "value": "Protocolo de cifrado"},
+                    {"label": "Emisor de certificado TLS", "value": "Emisor de certificado TLS"},
                 ],
                 placeholder="Selecciona una columna",
                 style={"width": "200px"},
