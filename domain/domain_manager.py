@@ -6,16 +6,15 @@ from storage.file_manager import (
     upsert_dominio_csv,
 )
 
-
 def _build_row(dominio: str, scan: dict) -> dict:
     """Convierte el resultado del scanner al formato de fila del CSV."""
     return {
         "Dominio":                   dominio,
-        "Escaneado en":              scan["scan_date"],
-        "Version TLS":               scan["version"],
-        "Días restantes":            scan["days_left"],
-        "Emisor de certificado TLS": scan["emisor"],
-        "Protocolo de cifrado":      scan["cipher_name"],
+        "Fecha scan":              scan["scan_date"],
+        "TLS":               scan["version"],
+        "Vence en":            scan["days_left"],
+        "Emisor": scan["emisor"],
+        "Cifrado":      scan["cipher_name"],
         "Riesgo":                    scan["risk"],
         "Observaciones":             scan["observaciones"],
     }
